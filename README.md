@@ -4,7 +4,7 @@
 A responsive media strategy workspace for growth marketers. Turn a campaign brief into a channel plan, model budget and KPI outcomes, inspect strategic signals, compare scenarios, and export a multi-sheet Excel workbook.
 
 ## Technology stack
-React 18 · TypeScript · Vite · Recharts · Lucide React · SheetJS (XLSX) · GitHub Actions · GitHub Pages. Supabase schema starter included for future auth and cloud persistence.
+React 18 · TypeScript · Vite · Recharts · Lucide React · SheetJS (XLSX) · GitHub Actions · GitHub Pages-ready static build. Supabase SQL starter included for future authentication and cloud persistence.
 
 ## Run locally
 Requires Node.js 20+.
@@ -12,9 +12,10 @@ Requires Node.js 20+.
 npm install
 npm run dev
 ```
-Production build:
+Production build and verification:
 ```bash
 npm run build
+npm run test:smoke
 npm run preview
 ```
 
@@ -23,15 +24,18 @@ npm run preview
 - Social, search, video, marketplace and retail media platform library
 - Editable channel budgets and assumptions
 - CPM, CPC, CTR, CVR, impressions, clicks, conversions and CPA forecasts
-- TOFU / MOFU / BOFU budget planning view
+- Funnel allocation view (TOFU / MOFU / BOFU)
 - Rules-based strategic intelligence and readiness checklist
 - Conservative, base and aggressive scenario comparison
 - Browser-saved plans
 - Multi-sheet Excel, CSV and print-to-PDF exports
-- Responsive premium dashboard and Google Fonts typography
+- Responsive dashboard with Space Grotesk + DM Sans typography
 
-## Deployment
-GitHub Actions workflow is configured in `.github/workflows/deploy.yml`. Enable **Settings → Pages → Build and deployment → GitHub Actions**. Expected URL: https://arupm2016.github.io/themediaplanner/
+## Automated publishing
+Every push to `main` installs dependencies, builds the app, runs a production bundle smoke test, and publishes the verified static site to the `gh-pages` branch. A CDN preview URL can be used at:
+`https://raw.githack.com/arupm2016/themediaplanner/gh-pages/index.html`
+
+To use the official GitHub Pages domain, enable **Settings → Pages → Build and deployment → Deploy from a branch**, choose `gh-pages` and `/ (root)`. Expected URL: https://arupm2016.github.io/themediaplanner/
 
 ## Important implementation notes
 - The current MVP uses browser localStorage; plans are local to the browser/device.

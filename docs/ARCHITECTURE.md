@@ -19,7 +19,7 @@ Campaign brief wizard, platform mix, objective selection, editable spend/CPM/CPC
 4. Push to `main` or run the **Build and deploy The Media Planner** workflow manually.
 5. The expected URL is https://arupm2016.github.io/themediaplanner/
 
-The workflow installs dependencies, runs the Vite production build, uploads `dist`, and deploys Pages.
+The workflow installs dependencies, runs the Vite production build, smoke-tests the generated bundle, and publishes `dist` to the `gh-pages` branch. A public static preview can be served through raw.githack. For the official `github.io` domain, enable Pages in repository Settings and select the `gh-pages` branch with root folder.
 
 ## Supabase production persistence
 1. Create a Supabase project.

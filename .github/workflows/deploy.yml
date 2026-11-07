@@ -26,6 +26,8 @@ jobs:
         run: npm run build
         env:
           GITHUB_PAGES: 'true'
+      - name: Smoke test production bundle
+        run: npm run test:smoke
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

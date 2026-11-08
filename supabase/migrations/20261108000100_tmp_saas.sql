@@ -305,6 +305,13 @@ alter table public.media_plans alter column created_by set not null;
 alter table public.media_benchmarks alter column workspace_id set not null;
 alter table public.media_benchmarks alter column created_by set not null;
 
+-- Remove the original single-user policies so workspace roles are the sole authority.
+drop policy if exists "Users can read own plans" on public.media_plans;
+drop policy if exists "Users can insert own plans" on public.media_plans;
+drop policy if exists "Users can update own plans" on public.media_plans;
+drop policy if exists "Users can delete own plans" on public.media_plans;
+drop policy if exists "Users can manage own benchmarks" on public.media_benchmarks;
+
 -- RLS on all tenant and billing tables.
 alter table public.profiles enable row level security;
 alter table public.workspaces enable row level security;

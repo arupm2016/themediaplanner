@@ -267,6 +267,7 @@ do $
 declare u record; v_workspace uuid; v_slug text; v_credits integer; v_days integer;
 begin
  for u in select id,email,raw_user_meta_data from auth.users loop
+   v_workspace := null;
    insert into public.profiles(id,full_name) values(u.id,coalesce(u.raw_user_meta_data->>'full_name',''))
    on conflict(id) do nothing;
    select m.workspace_id into v_workspace from public.workspace_members m where m.user_id=u.id order by m.joined_at limit 1;
@@ -281,7 +282,7 @@ begin
      insert into public.workspace_subscriptions(workspace_id,plan_code,status,credits_total,credits_remaining,current_period_start,current_period_end)
      values(v_workspace,'starter','active',v_credits,v_credits,now(),now()+make_interval(days=>v_days));
      insert into public.credit_ledger(workspace_id,amount,reason,reference,actor_user_id)
-     values(v_workspace,v_credits,'migration_starter_grant','migration-signup:'||u.id,v_workspace)
+     values(v_workspace,v_credits,'migration_starter_grant','migration-signup:'||u.id,u.id)
      on conflict(reference) do nothing;
    end if;
  end loop;

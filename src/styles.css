@@ -42,3 +42,25 @@
 .pricing .section-title-row>p{color:#53647a}
 .payment-note{color:#58677a}
 @media(max-width:760px){.audience-section{grid-template-columns:1fr;gap:28px;padding:55px 20px}.audience-roles{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-top:55px}}
+
+/* Modern SaaS conversion-focused landing refinements */
+.hero{min-height:650px;padding-top:86px}
+.hero h1{font-size:clamp(48px,6.4vw,82px);max-width:760px;line-height:1.02}
+.hero-lede{font-size:15px;max-width:560px}
+.hero-actions{gap:22px;margin-top:30px}
+.hero-free-note{display:flex;align-items:center;gap:8px;margin-top:20px;color:#91a3b9;font:10px 'DM Mono';letter-spacing:.035em}
+.hero-free-note svg{color:var(--lime)}
+.hero-free-note span{color:#52677f}
+.site-nav .btn{min-width:132px}
+.site-nav .nav-actions{gap:22px}
+.price-card:first-child{border-color:#b5c99c;box-shadow:0 12px 35px #152b0c0c}
+.price-card:first-child .btn-outline{border-color:#6e8c4c;color:#38551f;background:#f8fbf5}
+.price-card:first-child .btn-outline:hover{background:#eaf5dc}
+@media(max-width:760px){
+ .hero{min-height:auto;padding:70px 22px 45px;grid-template-columns:1fr}
+ .hero h1{font-size:clamp(42px,12vw,64px)}
+ .hero-visual{height:360px;transform:scale(.82);transform-origin:center}
+ .hero-free-note{flex-wrap:wrap}
+ .site-nav .nav-actions{gap:12px}
+ .site-nav .btn{min-width:0;padding:11px 12px}
+}

@@ -383,7 +383,7 @@ begin
   order by m.joined_at
   limit 1;
 end;
-$;
+$$;
 revoke all on function public.ensure_my_workspace() from public,anon;
 grant execute on function public.ensure_my_workspace() to authenticated;
 

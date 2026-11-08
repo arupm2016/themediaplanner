@@ -55,6 +55,7 @@ export const validate=(channels:Channel[],totalBudget:number,g:Guardrails)=>{
  if(g.preventOverAllocation&&spend>totalBudget*(1+g.budgetTolerance/100))warnings.push('Channel allocations exceed the approved campaign budget tolerance.');
  if(spend<totalBudget*(1-g.budgetTolerance/100))warnings.push('A portion of the approved budget remains unallocated.');
  active.forEach(c=>{
+  if(g.warnMissingTracking&&(c.objective==='Sales'||c.objective==='Leads')&&c.attributionShare<=0)warnings.push(c.name+': conversion tracking / attribution share is not configured.');
   if(c.frequency>g.maxFrequency)warnings.push(c.name+': planned frequency exceeds the configured cap.');
   if(c.budget/Math.max(spend,1)*100>g.maxChannelShare)warnings.push(c.name+': channel concentration exceeds the configured share limit.');
   if(c.objective==='Sales'&&c.budget<totalBudget*g.minConversionBudget/100)warnings.push(c.name+': conversion budget is below the configured minimum share.');

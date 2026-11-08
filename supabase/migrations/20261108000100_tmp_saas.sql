@@ -363,7 +363,12 @@ drop policy if exists plans_delete_admin on public.media_plans;
 create policy plans_delete_admin on public.media_plans for delete to authenticated using(public.has_workspace_role(workspace_id,array['owner','admin']::public.workspace_role[]));
 
 drop policy if exists benchmarks_member_all on public.media_benchmarks;
-create policy benchmarks_member_all on public.media_benchmarks for all to authenticated using(public.is_workspace_member(workspace_id)) with check(public.is_workspace_member(workspace_id));
+drop policy if exists benchmarks_read_member on public.media_benchmarks;
+create policy benchmarks_read_member on public.media_benchmarks for select to authenticated using(public.is_workspace_member(workspace_id));
+drop policy if exists benchmarks_write_editor on public.media_benchmarks;
+create policy benchmarks_write_editor on public.media_benchmarks for all to authenticated
+ using(public.has_workspace_role(workspace_id,array['owner','admin','strategist','analyst']::public.workspace_role[]))
+ with check(public.has_workspace_role(workspace_id,array['owner','admin','strategist','analyst']::public.workspace_role[]));
 
 drop policy if exists catalog_read_active on public.plan_catalog;
 create policy catalog_read_active on public.plan_catalog for select to anon,authenticated using(active=true);

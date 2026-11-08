@@ -11,8 +11,11 @@ Deno.serve(async(req)=>{
   const payload=JSON.parse(raw),eventType=payload.event??"unknown";
   const admin=createClient(Deno.env.get("SUPABASE_URL")!,Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
   const {error:insertError}=await admin.from("razorpay_webhook_events").insert({event_id:eventId,event_type:eventType,payload}).select().single();
-  if(insertError&&insertError.code==="23505")return new Response("duplicate",{status:200});
-  if(insertError){console.error(insertError);return new Response("could not persist event",{status:500});}
+  if(insertError&&insertError.code==="23505"){
+    const {data:prior}=await admin.from("razorpay_webhook_events").select("processed_at").eq("event_id",eventId).maybeSingle();
+    if(prior?.processed_at)return new Response("duplicate",{status:200});
+    // A previous delivery was stored but processing failed; safely retry the idempotent fulfilment.
+  }else if(insertError){console.error(insertError);return new Response("could not persist event",{status:500});}
   if(eventType==="payment.captured"){
     const payment=payload.payload?.payment?.entity;
     if(payment?.order_id&&payment?.id){

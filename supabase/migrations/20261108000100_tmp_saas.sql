@@ -49,8 +49,9 @@ grant execute on function public.has_workspace_role(uuid,public.workspace_role[]
 
 create table if not exists public.media_plans (
   id uuid primary key default gen_random_uuid(),
-  workspace_id uuid not null references public.workspaces(id) on delete cascade,
-  created_by uuid not null references auth.users(id),
+  workspace_id uuid references public.workspaces(id) on delete cascade,
+  created_by uuid references auth.users(id),
+  user_id uuid references auth.users(id),
   name text not null,
   brand text,
   objective text not null default 'Full-funnel growth',
@@ -61,12 +62,16 @@ create table if not exists public.media_plans (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+alter table public.media_plans add column if not exists workspace_id uuid references public.workspaces(id) on delete cascade;
+alter table public.media_plans add column if not exists created_by uuid references auth.users(id);
+alter table public.media_plans add column if not exists user_id uuid references auth.users(id);
 create index if not exists media_plans_workspace_updated_idx on public.media_plans(workspace_id,updated_at desc);
 
 create table if not exists public.media_benchmarks (
   id uuid primary key default gen_random_uuid(),
-  workspace_id uuid not null references public.workspaces(id) on delete cascade,
-  created_by uuid not null references auth.users(id),
+  workspace_id uuid references public.workspaces(id) on delete cascade,
+  created_by uuid references auth.users(id),
+  user_id uuid references auth.users(id),
   platform text not null, objective text not null, industry text,
   country text not null default 'IN', metric text not null,
   metric_value numeric(14,4) not null,
@@ -74,6 +79,9 @@ create table if not exists public.media_benchmarks (
   source_url text, sample_size integer, observed_on date,
   created_at timestamptz not null default now()
 );
+alter table public.media_benchmarks add column if not exists workspace_id uuid references public.workspaces(id) on delete cascade;
+alter table public.media_benchmarks add column if not exists created_by uuid references auth.users(id);
+alter table public.media_benchmarks add column if not exists user_id uuid references auth.users(id);
 
 -- Price/credit entitlements are authoritative on the server. Never accept amounts/credits from browser input.
 create table if not exists public.plan_catalog (
@@ -253,6 +261,49 @@ begin
 end $;
 drop trigger if exists on_auth_user_created_tmp on auth.users;
 create trigger on_auth_user_created_tmp after insert on auth.users for each row execute function public.handle_new_user();
+
+-- Provision workspaces for accounts that existed before this migration.
+do $
+declare u record; v_workspace uuid; v_slug text; v_credits integer; v_days integer;
+begin
+ for u in select id,email,raw_user_meta_data from auth.users loop
+   v_workspace := null;
+   insert into public.profiles(id,full_name) values(u.id,coalesce(u.raw_user_meta_data->>'full_name',''))
+   on conflict(id) do nothing;
+   select m.workspace_id into v_workspace from public.workspace_members m where m.user_id=u.id order by m.joined_at limit 1;
+   if v_workspace is null then
+     v_slug=lower(regexp_replace(coalesce(u.raw_user_meta_data->>'company','my-workspace'), '[^a-z0-9]+','-','g'))||'-'||substr(u.id::text,1,8);
+     insert into public.workspaces(name,slug,created_by) values(coalesce(nullif(u.raw_user_meta_data->>'company',''),'My workspace'),v_slug,u.id)
+     on conflict(slug) do update set slug=excluded.slug returning id into v_workspace;
+     insert into public.workspace_members(workspace_id,user_id,role) values(v_workspace,u.id,'owner') on conflict do nothing;
+   end if;
+   if not exists(select 1 from public.workspace_subscriptions s where s.workspace_id=v_workspace and s.status in ('active','trialing')) then
+     select credits_per_period,period_days into v_credits,v_days from public.plan_catalog where code='starter';
+     insert into public.workspace_subscriptions(workspace_id,plan_code,status,credits_total,credits_remaining,current_period_start,current_period_end)
+     values(v_workspace,'starter','active',v_credits,v_credits,now(),now()+make_interval(days=>v_days));
+     insert into public.credit_ledger(workspace_id,amount,reason,reference,actor_user_id)
+     values(v_workspace,v_credits,'migration_starter_grant','migration-signup:'||u.id,u.id)
+     on conflict(reference) do nothing;
+   end if;
+ end loop;
+end $;
+
+-- Move rows from the original single-user schema into the new tenant workspace model.
+do $
+begin
+ if exists(select 1 from information_schema.columns where table_schema='public' and table_name='media_plans' and column_name='user_id') then
+   update public.media_plans p set workspace_id=m.workspace_id,created_by=coalesce(p.created_by,p.user_id)
+   from public.workspace_members m where m.user_id=p.user_id and p.workspace_id is null;
+ end if;
+ if exists(select 1 from information_schema.columns where table_schema='public' and table_name='media_benchmarks' and column_name='user_id') then
+   update public.media_benchmarks b set workspace_id=m.workspace_id,created_by=coalesce(b.created_by,b.user_id)
+   from public.workspace_members m where m.user_id=b.user_id and b.workspace_id is null;
+ end if;
+end $;
+alter table public.media_plans alter column workspace_id set not null;
+alter table public.media_plans alter column created_by set not null;
+alter table public.media_benchmarks alter column workspace_id set not null;
+alter table public.media_benchmarks alter column created_by set not null;
 
 -- RLS on all tenant and billing tables.
 alter table public.profiles enable row level security;

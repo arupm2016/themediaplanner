@@ -32,10 +32,17 @@ npm run preview
 - Responsive dashboard with Space Grotesk + DM Sans typography
 
 ## Automated publishing
-Every push to `main` installs dependencies, builds the app, runs a production bundle smoke test, and publishes the verified static site to the `gh-pages` branch. A CDN preview URL can be used at:
-`https://raw.githack.com/arupm2016/themediaplanner/gh-pages/index.html`
+Every push to `main` installs dependencies, builds the app, runs a production bundle smoke test, and publishes the verified static site to the `gh-pages` branch.
 
-To use the official GitHub Pages domain, enable **Settings → Pages → Build and deployment → Deploy from a branch**, choose `gh-pages` and `/ (root)`. Expected URL: https://arupm2016.github.io/themediaplanner/
+### Vercel deployment
+**Import/deploy the `main` branch**, not `gh-pages`. The `gh-pages` branch contains only the generated static output for GitHub Pages and does not contain the Vite source/dependencies required by Vercel.
+
+Use these Vercel settings:
+- Framework preset: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
+- Install command: `npm install`
+- Production branch: `main`
 
 ## Important implementation notes
 - The current MVP uses browser localStorage; plans are local to the browser/device.

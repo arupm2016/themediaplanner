@@ -1,16 +1,18 @@
-import React,{useMemo,useState} from 'react';
+import React,{useEffect,useMemo,useState} from 'react';
 import {Activity,ArrowDownRight,ArrowRight,ArrowUpRight,BarChart3,Check,ChevronDown,ChevronRight,CircleHelp,Download,FileSpreadsheet,Filter,Globe2,Layers3,LockKeyhole,Menu,Plus,Save,Search,Settings2,ShieldCheck,SlidersHorizontal,Sparkles,Target,TrendingUp,Users,Wallet,X,Zap} from 'lucide-react';
 import {Bar,BarChart,CartesianGrid,Cell,Legend,Line,LineChart,ResponsiveContainer,Tooltip,XAxis,YAxis} from 'recharts';
 import {Channel,Guardrails,defaults,guardrailDefaults,calc,fmt,inr,pct,validate} from './lib/forecast';
 import {indiaReferences} from './lib/benchmarks';
-type Page='Overview'|'Media plan'|'Forecast lab'|'Scenarios'|'Benchmark library'|'Reports'|'Profile'|'Guardrails';
+import {supabase} from './lib/supabase';
+type Page='Overview'|'Media plan'|'Forecast lab'|'Scenarios'|'Benchmark library'|'Reports'|'Profile'|'Guardrails'|'Team'|'Billing';
 const platformNames=['Meta Ads','Google Search','YouTube','Google Display','Performance Max','Demand Gen','LinkedIn Ads','TikTok Ads','Pinterest Ads','Snapchat Ads','Amazon Ads','Flipkart Ads','Retail media','Programmatic','Affiliate','Influencer'];
 const objectives=['Awareness','Traffic','Video views','Leads','Sales','App installs','Store visits'] as const;
 const money=(n:number)=>inr(n);
 const Logo=({small=false}:{small?:boolean})=><img src="/brand/tmp-mark.svg" className={small?'logo-small':'logo'} alt="TMP dotted logo"/>;
 const Metric=({label,value,sub,icon:Icon,accent='lime'}:any)=><article className="metric"><div className="metric-top"><span>{label}</span><i className={accent}><Icon size={16}/></i></div><strong>{value}</strong><small>{sub}</small></article>;
 const read=(key:string,fallback:any)=>{try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch{return fallback}};
-export default function App(){
+type AppProps={user?:{id:string;email?:string};workspaceId?:string;workspaceRole?:string;onSignOut?:()=>void};
+export default function App({user,workspaceId,workspaceRole,onSignOut}:AppProps){
  const [publicView,setPublicView]=useState(!location.pathname.startsWith('/app'));
  const [page,setPage]=useState<Page>('Overview');
  const [mobile,setMobile]=useState(false);
@@ -30,6 +32,12 @@ export default function App(){
  const [pricingCycle,setPricingCycle]=useState('Monthly');
  const [activePlan,setActivePlan]=useState('Free');
  const [profileEdit,setProfileEdit]=useState(false);
+ const [cloudPlanId,setCloudPlanId]=useState<string|null>(null);
+ const [subscription,setSubscription]=useState<any>(null);
+ const [team,setTeam]=useState<any[]>([]);
+ const [inviteEmail,setInviteEmail]=useState('');
+ const [inviteRole,setInviteRole]=useState('analyst');
+ const [inviteBusy,setInviteBusy]=useState(false);
  const active=channels.filter(c=>c.enabled);
  const results=useMemo(()=>active.map(c=>({channel:c,...calc(c)})),[active]);
  const totalSpend=results.reduce((s,r)=>s+r.spend,0);
@@ -39,7 +47,48 @@ export default function App(){
  const checks=validate(channels,totalBudget,guardrails);
  const [forecastMultiplier,setForecastMultiplier]=useState({cpm:1,ctr:1,cvr:1});
  const scenarioFactor=scenario==='Conservative'?{cpm:1.2,ctr:.85,cvr:.8}:scenario==='Aggressive'?{cpm:.9,ctr:1.15,cvr:1.2}:{cpm:1,ctr:1,cvr:1};
- const save=(key:string,value:any)=>{localStorage.setItem(key,JSON.stringify(value));setNotice('Saved successfully');setTimeout(()=>setNotice(''),2500)};
+ const refreshWorkspace=async()=>{
+  if(!supabase||!workspaceId)return;
+  const [{data:sub},{data:members}]=await Promise.all([
+   supabase.from('workspace_subscriptions').select('*').eq('workspace_id',workspaceId).order('current_period_end',{ascending:false}).limit(1).maybeSingle(),
+   supabase.from('workspace_members').select('user_id,role,joined_at,profiles(full_name)').eq('workspace_id',workspaceId)
+  ]);
+  setSubscription(sub??null);setTeam(members??[]);
+ };
+ useEffect(()=>{if(!supabase||!workspaceId||!user?.id)return;let alive=true;
+  (async()=>{
+   const [{data:plan},{data:prof}]=await Promise.all([
+    supabase.from('media_plans').select('*').eq('workspace_id',workspaceId).order('updated_at',{ascending:false}).limit(1).maybeSingle(),
+    supabase.from('profiles').select('full_name').eq('id',user.id).maybeSingle()
+   ]);
+   if(!alive)return;
+   if(plan){setCloudPlanId(plan.id);setCampaign(plan.name);setBrand(plan.brand??'');setBudget(Number(plan.total_budget??0));if(plan.plan_json?.channels)setChannels(plan.plan_json.channels);if(plan.plan_json?.guardrails)setGuardrails(plan.plan_json.guardrails);}
+   if(prof?.full_name)setProfile((p:any)=>({...p,name:prof.full_name,email:user.email??p.email}));
+   await refreshWorkspace();
+  })();
+  return()=>{alive=false};
+ },[workspaceId,user?.id]);
+ const save=async(key:string,value:any)=>{
+  localStorage.setItem(key,JSON.stringify(value));
+  if(supabase&&workspaceId&&user?.id){
+   if(key==='tmp-profile'){
+    const {error}=await supabase.from('profiles').upsert({id:user.id,full_name:value.name,updated_at:new Date().toISOString()});
+    if(error){setNotice('Profile cloud save failed: '+error.message);return}
+   }
+   if(key==='tmp-channels'||key==='tmp-guardrails'){
+    const payload={workspace_id:workspaceId,created_by:user.id,name:campaign,brand,objective:'Full-funnel growth',currency:'INR',total_budget:budget,duration_days:30,plan_json:{channels:key==='tmp-channels'?value:channels,guardrails:key==='tmp-guardrails'?value:guardrails},updated_at:new Date().toISOString()};
+    if(cloudPlanId){
+      const {error}=await supabase.from('media_plans').update(payload).eq('id',cloudPlanId);
+      if(error){setNotice('Cloud plan save failed: '+error.message);return}
+    }else{
+      const {data,error}=await supabase.from('media_plans').insert(payload).select('id').single();
+      if(error){setNotice('Cloud plan save failed: '+error.message);return}
+      setCloudPlanId(data.id);
+    }
+   }
+  }
+  setNotice('Saved successfully');setTimeout(()=>setNotice(''),2500)
+ };
  const update=(id:string,key:keyof Channel,value:any)=>setChannels(old=>{const next=old.map(c=>c.id===id?{...c,[key]:value}:c);localStorage.setItem('tmp-channels',JSON.stringify(next));return next});
  const updateGuard=(key:keyof Guardrails,value:any)=>setGuardrails(old=>{const next={...old,[key]:value};localStorage.setItem('tmp-guardrails',JSON.stringify(next));return next});
  const addChannel=()=>{const name=newChannel;if(channels.some(c=>c.name===name)){setNotice('This channel is already in the plan');return}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'-');const n:Channel={...defaults[0],id,name,platform:name,objective:'Awareness',budget:0,cpm:160,ctr:1,cpc:16,cvr:2,frequency:3,videoShare:40,viewRate:25,leadRate:0,aov:1500,margin:40,attributionShare:70,enabled:true};setChannels(old=>{const v=[...old,n];localStorage.setItem('tmp-channels',JSON.stringify(v));return v});setShowAdd(false)};

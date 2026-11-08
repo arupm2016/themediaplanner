@@ -25,7 +25,7 @@ Deno.serve(async(req)=>{
   const payment=await response.json();
   if(!response.ok)return reply({error:"Could not verify payment with Razorpay"},502);
   if(payment.order_id!==razorpay_order_id||payment.amount!==order.amount_paise||payment.currency!==order.currency||payment.status!=="captured")return reply({error:"Payment is not captured or does not match the order"},409);
-  const {data:fulfilled,error}=await admin.rpc("fulfil_paid_order",{p_razorpay_order_id:razorpay_order_id,p_razorpay_payment_id:razorpay_payment_id});
+  const {data:fulfilled,error}=await admin.rpc("fulfil_paid_order",{p_razorpay_order_id:razorpay_order_id,p_razorpay_payment_id:razorpay_payment_id,p_amount_paise:payment.amount,p_currency:payment.currency});
   if(error){console.error(error);return reply({error:"Payment verified but entitlement activation is pending. Contact support with your payment ID."},500);}
   return reply({ok:true,subscription:fulfilled,plan_code:order.plan_code});
  }catch(e){console.error(e);return reply({error:"Unexpected verification error"},500);}

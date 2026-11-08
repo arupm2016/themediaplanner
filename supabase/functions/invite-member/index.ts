@@ -21,9 +21,18 @@ Deno.serve(async(req)=>{
   const normalized=String(email).trim().toLowerCase();
   const {data:invite,error:inviteError}=await admin.from("workspace_invites").upsert({workspace_id,email:normalized,role,invited_by:user.id,expires_at:new Date(Date.now()+7*86400000).toISOString()},{onConflict:"workspace_id,email"}).select().single();
   if(inviteError)return reply({error:"Could not save invitation"},500);
+  const {data:userList,error:listError}=await admin.auth.admin.listUsers({page:1,perPage:1000});
+  if(listError)return reply({error:"Could not check existing account"},502);
+  const existing=userList.users.find((u)=>u.email?.toLowerCase()===normalized);
+  if(existing){
+    const {error:memberError}=await admin.from("workspace_members").upsert({workspace_id,user_id:existing.id,role,invited_by:user.id},{onConflict:"workspace_id,user_id"});
+    if(memberError)return reply({error:"Could not add existing account to workspace"},500);
+    await admin.from("workspace_invites").update({accepted_at:new Date().toISOString()}).eq("id",invite.id);
+    return reply({ok:true,invite_id:invite.id,added_existing_user:true});
+  }
   const origin=Deno.env.get("APP_ORIGIN");if(!origin)return reply({error:"APP_ORIGIN must be configured to send invitations"},503);
-  const {error:mailError}=await admin.auth.admin.inviteUserByEmail(normalized,{redirectTo:origin+"/accept-invite",data:{tmp_workspace_invite_id:invite.id}});
+  const {error:mailError}=await admin.auth.admin.inviteUserByEmail(normalized,{redirectTo:origin+"/app",data:{tmp_workspace_invite_id:invite.id}});
   if(mailError)return reply({error:"Invitation saved but email could not be sent: "+mailError.message},502);
-  return reply({ok:true,invite_id:invite.id});
+  return reply({ok:true,invite_id:invite.id,invitation_sent:true});
  }catch(e){console.error(e);return reply({error:"Unexpected invitation error"},500);}
 });

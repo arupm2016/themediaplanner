@@ -16,7 +16,7 @@ export default function App({user,workspaceId,workspaceRole,onSignOut}:AppProps)
  const [publicView,setPublicView]=useState(!location.pathname.startsWith('/app'));
  const [page,setPage]=useState<Page>('Overview');
  const [mobile,setMobile]=useState(false);
- const [profile,setProfile]=useState(()=>read('tmp-profile',{name:'Arup Mukherjee',role:'Growth & Media Strategy',company:'Agency workspace',email:'',timezone:'Asia/Kolkata',currency:'INR'}));
+ const [profile,setProfile]=useState(()=>read('tmp-profile',{name:'Workspace owner',role:'Growth & Media Strategy',company:'Agency workspace',email:'',timezone:'Asia/Kolkata',currency:'INR'}));
  const [channels,setChannels]=useState<Channel[]>(()=>read('tmp-channels',defaults));
  const [budget,setBudget]=useState(500000);
  const [campaign,setCampaign]=useState('Q4 integrated growth plan');
@@ -51,7 +51,7 @@ export default function App({user,workspaceId,workspaceRole,onSignOut}:AppProps)
   if(!supabase||!workspaceId)return;
   const [{data:sub},{data:members}]=await Promise.all([
    supabase.from('workspace_subscriptions').select('*').eq('workspace_id',workspaceId).order('current_period_end',{ascending:false}).limit(1).maybeSingle(),
-   supabase.from('workspace_members').select('user_id,role,joined_at,profiles(full_name)').eq('workspace_id',workspaceId)
+   supabase.from('workspace_members').select('user_id,role,joined_at').eq('workspace_id',workspaceId)
   ]);
   setSubscription(sub??null);setTeam(members??[]);
  };

@@ -1,0 +1,47 @@
+User-agent: *
+Allow: /
+Disallow: /app/
+Disallow: /workspace/
+Disallow: /account/
+Disallow: /settings/
+Disallow: /api/
+Disallow: /*?*
+Allow: /assets/
+Allow: /favicon.svg
+
+User-agent: GPTBot
+Allow: /
+Disallow: /app/
+Disallow: /workspace/
+Disallow: /account/
+Disallow: /settings/
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /app/
+Disallow: /workspace/
+Disallow: /account/
+Disallow: /settings/
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://themediaplanner.vercel.app/sitemap.xml

@@ -219,7 +219,7 @@ grant execute on function public.fulfil_paid_order(text,text) to service_role;
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path=public
 as $
-declare v_workspace uuid; v_slug text; v_invite public.workspace_invites%rowtype; v_invite_id uuid;
+declare v_workspace uuid; v_slug text; v_invite public.workspace_invites%rowtype; v_invite_id uuid; v_has_invite boolean := false;
 begin
  insert into public.profiles(id,full_name) values(new.id,coalesce(new.raw_user_meta_data->>'full_name',''))
  on conflict(id) do nothing;
@@ -228,8 +228,9 @@ begin
    select * into v_invite from public.workspace_invites
     where id=v_invite_id and lower(email)=lower(new.email) and accepted_at is null and expires_at>now()
     for update;
+   v_has_invite=found;
  end if;
- if found then
+ if v_has_invite then
    insert into public.workspace_members(workspace_id,user_id,role,invited_by)
    values(v_invite.workspace_id,new.id,v_invite.role,v_invite.invited_by)
    on conflict(workspace_id,user_id) do update set role=excluded.role;

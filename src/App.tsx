@@ -76,7 +76,7 @@ export default function App({user,workspaceId,workspaceRole,onSignOut}:AppProps)
     if(error){setNotice('Profile cloud save failed: '+error.message);return}
    }
    if(key==='tmp-channels'||key==='tmp-guardrails'){
-    const payload={workspace_id:workspaceId,created_by:user.id,name:campaign,brand,objective:'Full-funnel growth',currency:'INR',total_budget:budget,duration_days:30,plan_json:{channels:key==='tmp-channels'?value:channels,guardrails:key==='tmp-guardrails'?value:guardrails},updated_at:new Date().toISOString()};
+    const payload={workspace_id:workspaceId,created_by:user.id,user_id:user.id,name:campaign,brand,objective:'Full-funnel growth',currency:'INR',total_budget:budget,duration_days:30,plan_json:{channels:key==='tmp-channels'?value:channels,guardrails:key==='tmp-guardrails'?value:guardrails},updated_at:new Date().toISOString()};
     if(cloudPlanId){
       const {error}=await supabase.from('media_plans').update(payload).eq('id',cloudPlanId);
       if(error){setNotice('Cloud plan save failed: '+error.message);return}

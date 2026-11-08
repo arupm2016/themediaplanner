@@ -16,7 +16,7 @@ Deno.serve(async(req)=>{
   if(eventType==="payment.captured"){
     const payment=payload.payload?.payment?.entity;
     if(payment?.order_id&&payment?.id){
-      const {error}=await admin.rpc("fulfil_paid_order",{p_razorpay_order_id:payment.order_id,p_razorpay_payment_id:payment.id});
+      const {error}=await admin.rpc("fulfil_paid_order",{p_razorpay_order_id:payment.order_id,p_razorpay_payment_id:payment.id,p_amount_paise:payment.amount,p_currency:payment.currency});
       if(error){await admin.from("razorpay_webhook_events").update({processing_error:error.message}).eq("event_id",eventId);console.error(error);return new Response("fulfilment pending",{status:500});}
     }
   }

@@ -218,22 +218,35 @@ grant execute on function public.fulfil_paid_order(text,text) to service_role;
 -- Provision an initial workspace and free entitlement on first sign-up.
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path=public
-as $$
-declare v_workspace uuid; v_slug text;
+as $
+declare v_workspace uuid; v_slug text; v_invite public.workspace_invites%rowtype; v_invite_id uuid;
 begin
  insert into public.profiles(id,full_name) values(new.id,coalesce(new.raw_user_meta_data->>'full_name',''))
  on conflict(id) do nothing;
- v_slug=lower(regexp_replace(coalesce(new.raw_user_meta_data->>'company','my-workspace'), '[^a-z0-9]+','-','g'))||'-'||substr(new.id::text,1,8);
- insert into public.workspaces(name,slug,created_by) values(coalesce(nullif(new.raw_user_meta_data->>'company',''),'My workspace'),v_slug,new.id)
- returning id into v_workspace;
- insert into public.workspace_members(workspace_id,user_id,role) values(v_workspace,new.id,'owner');
- insert into public.workspace_subscriptions(workspace_id,plan_code,status,credits_total,credits_remaining,current_period_start,current_period_end)
- select v_workspace,'starter','active',credits_per_period,credits_per_period,now(),now()+make_interval(days=>period_days) from public.plan_catalog where code='starter';
- insert into public.credit_ledger(workspace_id,amount,reason,reference,actor_user_id)
- select v_workspace,credits_per_period,'signup_grant','signup:'||new.id,new.id from public.plan_catalog where code='starter'
- on conflict(reference) do nothing;
+ begin v_invite_id=(new.raw_user_meta_data->>'tmp_workspace_invite_id')::uuid; exception when others then v_invite_id=null; end;
+ if v_invite_id is not null then
+   select * into v_invite from public.workspace_invites
+    where id=v_invite_id and lower(email)=lower(new.email) and accepted_at is null and expires_at>now()
+    for update;
+ end if;
+ if found then
+   insert into public.workspace_members(workspace_id,user_id,role,invited_by)
+   values(v_invite.workspace_id,new.id,v_invite.role,v_invite.invited_by)
+   on conflict(workspace_id,user_id) do update set role=excluded.role;
+   update public.workspace_invites set accepted_at=now() where id=v_invite.id;
+ else
+   v_slug=lower(regexp_replace(coalesce(new.raw_user_meta_data->>'company','my-workspace'), '[^a-z0-9]+','-','g'))||'-'||substr(new.id::text,1,8);
+   insert into public.workspaces(name,slug,created_by) values(coalesce(nullif(new.raw_user_meta_data->>'company',''),'My workspace'),v_slug,new.id)
+   returning id into v_workspace;
+   insert into public.workspace_members(workspace_id,user_id,role) values(v_workspace,new.id,'owner');
+   insert into public.workspace_subscriptions(workspace_id,plan_code,status,credits_total,credits_remaining,current_period_start,current_period_end)
+   select v_workspace,'starter','active',credits_per_period,credits_per_period,now(),now()+make_interval(days=>period_days) from public.plan_catalog where code='starter';
+   insert into public.credit_ledger(workspace_id,amount,reason,reference,actor_user_id)
+   select v_workspace,credits_per_period,'signup_grant','signup:'||new.id,new.id from public.plan_catalog where code='starter'
+   on conflict(reference) do nothing;
+ end if;
  return new;
-end $$;
+end $;
 drop trigger if exists on_auth_user_created_tmp on auth.users;
 create trigger on_auth_user_created_tmp after insert on auth.users for each row execute function public.handle_new_user();
 
@@ -262,8 +275,8 @@ create policy workspace_update_admin on public.workspaces for update to authenti
 
 drop policy if exists members_read_member on public.workspace_members;
 create policy members_read_member on public.workspace_members for select to authenticated using(public.is_workspace_member(workspace_id));
-drop policy if exists members_manage_admin on public.workspace_members;
-create policy members_manage_admin on public.workspace_members for all to authenticated using(public.has_workspace_role(workspace_id,array['owner','admin']::public.workspace_role[])) with check(public.has_workspace_role(workspace_id,array['owner','admin']::public.workspace_role[]));
+-- Membership writes are performed only by trusted invitation/administration Edge Functions.
+-- There is deliberately no client-side INSERT/UPDATE/DELETE policy on workspace_members.
 
 drop policy if exists plans_read_member on public.media_plans;
 create policy plans_read_member on public.media_plans for select to authenticated using(public.is_workspace_member(workspace_id));

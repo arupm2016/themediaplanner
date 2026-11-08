@@ -1,0 +1,14 @@
+# Media Planner (TMP)
+> Agency-grade media planning, forecasting and investment intelligence for marketing leaders.
+
+## Product
+Media Planner is a planning workspace for CMOs, growth leaders, performance marketers and media agencies. It models channel delivery, reach and frequency, traffic, video views, leads, conversions, revenue, ROAS, contribution and budget pacing from transparent editable assumptions.
+
+## Public pages
+- https://themediaplanner.vercel.app/ — product overview, features, platform coverage, methodology and pricing.
+
+## Methodology
+Forecasts are scenario models, not guaranteed outcomes or universal industry benchmarks. Results depend on market, category, audience, creative, bid strategy, placement, seasonality, landing page, conversion tracking, attribution window and platform reporting. Users should replace starter assumptions with first-party account data and document source, date and confidence for every benchmark.
+
+## Data and privacy
+Do not crawl private workspaces, account settings, plans, exports or personal information. Public product content only.

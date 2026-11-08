@@ -38,11 +38,11 @@ create table if not exists public.workspace_members (
   primary key(workspace_id,user_id)
 );
 create index if not exists workspace_members_user_idx on public.workspace_members(user_id);
-do $ begin
+do $$ begin
  if not exists(select 1 from pg_constraint where conname='workspace_members_profile_fk') then
   alter table public.workspace_members add constraint workspace_members_profile_fk foreign key(user_id) references public.profiles(id) on delete cascade;
  end if;
-end $;
+end $$;
 
 create or replace function public.is_workspace_member(p_workspace_id uuid)
 returns boolean language sql stable security definer set search_path=public
@@ -239,7 +239,7 @@ grant execute on function public.fulfil_paid_order(text,text,bigint,text) to ser
 -- Provision an initial workspace and free entitlement on first sign-up.
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path=public
-as $
+as $$
 declare v_workspace uuid; v_slug text; v_invite public.workspace_invites%rowtype; v_invite_id uuid; v_has_invite boolean := false;
 begin
  insert into public.profiles(id,full_name,email) values(new.id,coalesce(new.raw_user_meta_data->>'full_name',''),new.email)
@@ -268,12 +268,12 @@ begin
    on conflict(reference) do nothing;
  end if;
  return new;
-end $;
+end $$;
 drop trigger if exists on_auth_user_created_tmp on auth.users;
 create trigger on_auth_user_created_tmp after insert on auth.users for each row execute function public.handle_new_user();
 
 -- Provision workspaces for accounts that existed before this migration.
-do $
+do $$
 declare u record; v_workspace uuid; v_slug text; v_credits integer; v_days integer;
 begin
  for u in select id,email,raw_user_meta_data from auth.users loop
@@ -297,10 +297,10 @@ begin
      on conflict(reference) do nothing;
    end if;
  end loop;
-end $;
+end $$;
 
 -- Move rows from the original single-user schema into the new tenant workspace model.
-do $
+do $$
 begin
  if exists(select 1 from information_schema.columns where table_schema='public' and table_name='media_plans' and column_name='user_id') then
    update public.media_plans p set workspace_id=m.workspace_id,created_by=coalesce(p.created_by,p.user_id)
@@ -310,7 +310,7 @@ begin
    update public.media_benchmarks b set workspace_id=m.workspace_id,created_by=coalesce(b.created_by,b.user_id)
    from public.workspace_members m where m.user_id=b.user_id and b.workspace_id is null;
  end if;
-end $;
+end $$;
 alter table public.media_plans alter column workspace_id set not null;
 alter table public.media_plans alter column created_by set not null;
 alter table public.media_benchmarks alter column workspace_id set not null;
@@ -322,7 +322,7 @@ returns table(workspace_id uuid, role public.workspace_role)
 language plpgsql
 security definer
 set search_path=public
-as $
+as $$
 declare
   v_user_id uuid := auth.uid();
   v_workspace_id uuid;

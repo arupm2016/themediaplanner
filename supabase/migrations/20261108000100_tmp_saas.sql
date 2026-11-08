@@ -280,6 +280,7 @@ begin
    v_workspace := null;
    insert into public.profiles(id,full_name,email) values(u.id,coalesce(u.raw_user_meta_data->>'full_name',''),u.email)
    on conflict(id) do nothing;
+   update public.profiles set email=u.email where id=u.id and email is null;
    select m.workspace_id into v_workspace from public.workspace_members m where m.user_id=u.id order by m.joined_at limit 1;
    if v_workspace is null then
      v_slug=lower(regexp_replace(coalesce(u.raw_user_meta_data->>'company','my-workspace'), '[^a-z0-9]+','-','g'))||'-'||substr(u.id::text,1,8);

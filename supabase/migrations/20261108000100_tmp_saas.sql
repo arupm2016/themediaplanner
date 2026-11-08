@@ -234,7 +234,7 @@ begin
  return jsonb_build_object('ok',true,'subscription_id',v_sub.id,'credits',v_plan.credits_per_period);
 end $$;
 revoke all on function public.fulfil_paid_order(text,text,bigint,text) from public,anon,authenticated;
-grant execute on function public.fulfil_paid_order(text,text) to service_role;
+grant execute on function public.fulfil_paid_order(text,text,bigint,text) to service_role;
 
 -- Provision an initial workspace and free entitlement on first sign-up.
 create or replace function public.handle_new_user()
@@ -315,6 +315,77 @@ alter table public.media_plans alter column workspace_id set not null;
 alter table public.media_plans alter column created_by set not null;
 alter table public.media_benchmarks alter column workspace_id set not null;
 alter table public.media_benchmarks alter column created_by set not null;
+
+-- Authenticated self-service workspace bootstrap. This function can only provision the caller's own workspace.
+create or replace function public.ensure_my_workspace()
+returns table(workspace_id uuid, role public.workspace_role)
+language plpgsql
+security definer
+set search_path=public
+as $
+declare
+  v_user_id uuid := auth.uid();
+  v_workspace_id uuid;
+  v_company text := coalesce(nullif(auth.jwt()->'user_metadata'->>'company',''),'My workspace');
+  v_slug text;
+  v_credits integer;
+  v_days integer;
+begin
+  if v_user_id is null then
+    raise exception 'authentication required' using errcode='42501';
+  end if;
+
+  insert into public.profiles(id,full_name,email)
+  values(v_user_id,coalesce(auth.jwt()->'user_metadata'->>'full_name',''),auth.jwt()->>'email')
+  on conflict(id) do update set
+    email=coalesce(excluded.email,profiles.email),
+    full_name=case when profiles.full_name='' then excluded.full_name else profiles.full_name end;
+
+  select m.workspace_id into v_workspace_id
+  from public.workspace_members m
+  where m.user_id=v_user_id
+  order by m.joined_at
+  limit 1;
+
+  if v_workspace_id is null then
+    v_slug='tmp-'||replace(v_user_id::text,'-','');
+    insert into public.workspaces(name,slug,created_by)
+    values(v_company,v_slug,v_user_id)
+    returning id into v_workspace_id;
+
+    insert into public.workspace_members(workspace_id,user_id,role)
+    values(v_workspace_id,v_user_id,'owner')
+    on conflict(workspace_id,user_id) do nothing;
+  end if;
+
+  if not exists (
+    select 1 from public.workspace_subscriptions s
+    where s.workspace_id=v_workspace_id and s.status in ('active','trialing')
+  ) then
+    select credits_per_period,period_days into v_credits,v_days
+    from public.plan_catalog where code='starter' and active=true;
+    if v_credits is not null then
+      insert into public.workspace_subscriptions(
+        workspace_id,plan_code,status,credits_total,credits_remaining,current_period_start,current_period_end
+      ) values (
+        v_workspace_id,'starter','active',v_credits,v_credits,now(),now()+make_interval(days=>v_days)
+      );
+      insert into public.credit_ledger(workspace_id,amount,reason,reference,actor_user_id)
+      values(v_workspace_id,v_credits,'workspace_bootstrap','bootstrap:'||v_user_id,v_user_id)
+      on conflict(reference) do nothing;
+    end if;
+  end if;
+
+  return query
+  select m.workspace_id,m.role
+  from public.workspace_members m
+  where m.user_id=v_user_id
+  order by m.joined_at
+  limit 1;
+end;
+$;
+revoke all on function public.ensure_my_workspace() from public,anon;
+grant execute on function public.ensure_my_workspace() to authenticated;
 
 -- Remove the original single-user policies so workspace roles are the sole authority.
 drop policy if exists "Users can read own plans" on public.media_plans;

@@ -190,7 +190,7 @@ revoke all on function public.consume_workspace_credits(uuid,integer,text,text) 
 grant execute on function public.consume_workspace_credits(uuid,integer,text,text) to authenticated;
 
 -- Service-role-only fulfilment function. Idempotent even when callback and webhook race.
-create or replace function public.fulfil_paid_order(p_razorpay_order_id text,p_razorpay_payment_id text)
+create or replace function public.fulfil_paid_order(p_razorpay_order_id text,p_razorpay_payment_id text,p_amount_paise bigint,p_currency text)
 returns jsonb language plpgsql security definer set search_path=public
 as $$
 declare v_order public.billing_orders%rowtype; v_plan public.plan_catalog%rowtype; v_sub public.workspace_subscriptions%rowtype;
@@ -200,7 +200,7 @@ begin
  if v_order.status='paid' then return jsonb_build_object('ok',true,'already_processed',true); end if;
  select * into v_plan from public.plan_catalog where code=v_order.plan_code and active=true;
  if not found then raise exception 'plan unavailable'; end if;
- if v_order.amount_paise<>v_plan.amount_paise or v_order.currency<>v_plan.currency then raise exception 'order amount mismatch'; end if;
+ if v_order.amount_paise<>v_plan.amount_paise or v_order.currency<>v_plan.currency or v_order.amount_paise<>p_amount_paise or v_order.currency<>p_currency then raise exception 'payment amount or currency mismatch'; end if;
  update public.billing_orders set status='paid',razorpay_payment_id=p_razorpay_payment_id,paid_at=now() where id=v_order.id;
  update public.workspace_subscriptions set status='expired',updated_at=now()
   where workspace_id=v_order.workspace_id and status='active';
@@ -212,7 +212,7 @@ begin
  on conflict(reference) do nothing;
  return jsonb_build_object('ok',true,'subscription_id',v_sub.id,'credits',v_plan.credits_per_period);
 end $$;
-revoke all on function public.fulfil_paid_order(text,text) from public,anon,authenticated;
+revoke all on function public.fulfil_paid_order(text,text,bigint,text) from public,anon,authenticated;
 grant execute on function public.fulfil_paid_order(text,text) to service_role;
 
 -- Provision an initial workspace and free entitlement on first sign-up.

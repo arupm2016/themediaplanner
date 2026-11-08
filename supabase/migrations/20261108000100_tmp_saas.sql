@@ -13,10 +13,13 @@ exception when duplicate_object then null; end $$;
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text not null default '',
+  email text,
   avatar_url text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.profiles add column if not exists email text;
 
 create table if not exists public.workspaces (
   id uuid primary key default gen_random_uuid(),
@@ -35,6 +38,11 @@ create table if not exists public.workspace_members (
   primary key(workspace_id,user_id)
 );
 create index if not exists workspace_members_user_idx on public.workspace_members(user_id);
+do $ begin
+ if not exists(select 1 from pg_constraint where conname='workspace_members_profile_fk') then
+  alter table public.workspace_members add constraint workspace_members_profile_fk foreign key(user_id) references public.profiles(id) on delete cascade;
+ end if;
+end $;
 
 create or replace function public.is_workspace_member(p_workspace_id uuid)
 returns boolean language sql stable security definer set search_path=public
@@ -234,7 +242,7 @@ returns trigger language plpgsql security definer set search_path=public
 as $
 declare v_workspace uuid; v_slug text; v_invite public.workspace_invites%rowtype; v_invite_id uuid; v_has_invite boolean := false;
 begin
- insert into public.profiles(id,full_name) values(new.id,coalesce(new.raw_user_meta_data->>'full_name',''))
+ insert into public.profiles(id,full_name,email) values(new.id,coalesce(new.raw_user_meta_data->>'full_name',''),new.email)
  on conflict(id) do nothing;
  begin v_invite_id=(new.raw_user_meta_data->>'tmp_workspace_invite_id')::uuid; exception when others then v_invite_id=null; end;
  if v_invite_id is not null then
@@ -270,7 +278,7 @@ declare u record; v_workspace uuid; v_slug text; v_credits integer; v_days integ
 begin
  for u in select id,email,raw_user_meta_data from auth.users loop
    v_workspace := null;
-   insert into public.profiles(id,full_name) values(u.id,coalesce(u.raw_user_meta_data->>'full_name',''))
+   insert into public.profiles(id,full_name,email) values(u.id,coalesce(u.raw_user_meta_data->>'full_name',''),u.email)
    on conflict(id) do nothing;
    select m.workspace_id into v_workspace from public.workspace_members m where m.user_id=u.id order by m.joined_at limit 1;
    if v_workspace is null then
@@ -329,6 +337,8 @@ alter table public.workspace_invites enable row level security;
 
 drop policy if exists profile_select_self on public.profiles;
 create policy profile_select_self on public.profiles for select to authenticated using(id=auth.uid());
+drop policy if exists profile_read_workspace on public.profiles;
+create policy profile_read_workspace on public.profiles for select to authenticated using(exists(select 1 from public.workspace_members m where m.user_id=profiles.id and public.is_workspace_member(m.workspace_id)));
 drop policy if exists profile_update_self on public.profiles;
 create policy profile_update_self on public.profiles for update to authenticated using(id=auth.uid()) with check(id=auth.uid());
 

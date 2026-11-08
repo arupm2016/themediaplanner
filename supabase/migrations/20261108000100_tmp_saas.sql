@@ -117,6 +117,7 @@ create table if not exists public.workspace_subscriptions (
   updated_at timestamptz not null default now()
 );
 create index if not exists subscriptions_workspace_idx on public.workspace_subscriptions(workspace_id,status,current_period_end desc);
+create unique index if not exists one_active_subscription_per_workspace on public.workspace_subscriptions(workspace_id) where status='active';
 
 create table if not exists public.billing_orders (
   id uuid primary key default gen_random_uuid(),
@@ -205,6 +206,7 @@ declare v_order public.billing_orders%rowtype; v_plan public.plan_catalog%rowtyp
 begin
  select * into v_order from public.billing_orders where razorpay_order_id=p_razorpay_order_id for update;
  if not found then raise exception 'order not found'; end if;
+ perform pg_advisory_xact_lock(hashtext(v_order.workspace_id::text));
  if v_order.status='paid' then
    if v_order.razorpay_payment_id=p_razorpay_payment_id and v_order.amount_paise=p_amount_paise and v_order.currency=p_currency then return jsonb_build_object('ok',true,'already_processed',true); end if;
    raise exception 'order already fulfilled by a different payment';

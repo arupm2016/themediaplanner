@@ -289,3 +289,11 @@
  .site .pricing .section-title-row h2{font-size:42px!important}
  .site .final-cta{padding:44px 20px!important}
 }
+
+.site .cap-feature{background:#fff!important;color:#201b24!important;border:1px solid #e6deea!important;box-shadow:0 8px 28px #28132e08!important}
+.site .cap-feature>span,.site .cap-feature>svg{color:#64236f!important}
+.site .cap-feature h3{color:#201b24!important}
+.site .cap-feature p{color:#514957!important}
+.site .cap-lines i{background:linear-gradient(to top,#64236f16,#64236f00)!important;border-top:2px solid #8b55a0!important}
+.site .cap-lines i:nth-child(3),.site .cap-lines i:nth-child(5){border-top-color:#a77bb2!important}
+.site .cap-lines i:nth-child(4){border-top-color:#64236f!important}

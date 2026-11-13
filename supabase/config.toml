@@ -1,4 +1,4 @@
-project_id = "tmp-media-planner"
+project_id = "fcijuqklfpeffhrkzgtb"
 
 [functions.create-checkout-order]
 verify_jwt = true

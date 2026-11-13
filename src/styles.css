@@ -212,3 +212,80 @@
 @media(max-width:760px){
  .site .platform-section,.site .methodology,.site .pricing,.site .final-cta,.site .site-footer{background:#fff!important}
 }
+
+
+/* FINAL landing-page design pass: legible product UI, consistent type and clear conversion */
+.site{
+  --brand:#64236f;--brand-dark:#4f195a;--ink:#201b24;--body:#514957;--muted:#716878;
+  --line:#e6deea;--surface:#faf8fb;
+  font-family:Inter,Manrope,Arial,sans-serif!important;
+  color:var(--ink)!important;background:#fff!important;
+}
+.site *{font-family:inherit}
+.site h1,.site h2,.site h3,.site h4{font-family:Inter,Manrope,Arial,sans-serif!important;letter-spacing:-.045em}
+.site .section{padding:88px max(6vw,24px)!important}
+.site .section-kicker{font-size:12px!important;font-weight:800!important;letter-spacing:.12em!important;color:var(--brand)!important}
+.site .section-title-row h2{font-size:clamp(36px,4.3vw,58px)!important;line-height:1.08!important;font-weight:800!important;color:var(--ink)!important}
+.site .section-title-row h2 em{color:var(--brand)!important}
+.site .section-title-row>p{font-size:16px!important;line-height:1.7!important;color:var(--body)!important;max-width:440px}
+.site .cap-card{background:#fff!important;border:1px solid var(--line)!important;border-radius:12px!important;padding:28px!important;box-shadow:0 8px 28px #28132e08!important}
+.site .cap-card h3{font-size:21px!important;line-height:1.25!important;color:var(--ink)!important}
+.site .cap-card p{font-size:14px!important;line-height:1.7!important;color:var(--body)!important}
+.site .cap-card>span{font-size:11px!important;font-weight:800!important;color:var(--brand)!important}
+.site .cap-card svg{color:var(--brand)!important}
+.site .platform-section,.site .methodology{background:#fff!important;color:var(--ink)!important}
+.site .platform-pill{background:#fff!important;border:1px solid var(--line)!important;border-radius:8px!important;color:var(--ink)!important;padding:15px 18px!important;font-size:14px!important;font-weight:700!important}
+.site .platform-pill span{color:#8a7d90!important}
+.site .method-formula{background:#faf7fb!important;border:1px solid var(--line)!important;border-radius:12px!important}
+.site .method-formula code{color:#3f3545!important;font-size:14px!important}
+.site .method-copy h3{font-size:26px!important;color:var(--ink)!important}
+.site .method-copy p{font-size:15px!important;line-height:1.75!important;color:var(--body)!important}
+.site .pricing{background:#f8f5fa!important;color:var(--ink)!important}
+.site .pricing .section-title-row h2{font-size:clamp(42px,5.4vw,72px)!important;line-height:1.02!important}
+.site .pricing .section-title-row>p{font-size:15px!important}
+.site .billing-toggle{background:#eae3ed!important;border-radius:8px!important;padding:4px!important}
+.site .billing-toggle button{color:#5b5060!important;font-size:13px!important;font-weight:650!important}
+.site .billing-toggle button.selected{background:#fff!important;color:var(--brand)!important;box-shadow:0 1px 5px #21132918!important;border-radius:6px!important}
+.site .price-grid{gap:18px!important;align-items:stretch!important}
+.site .price-card,.site .price-card.featured{
+  background:#fff!important;color:var(--ink)!important;border:1px solid #e2d9e7!important;
+  border-radius:12px!important;padding:28px 26px 24px!important;
+  box-shadow:0 8px 28px #28132e0a!important;min-height:470px!important;
+}
+.site .price-card.featured{border:2px solid var(--brand)!important;box-shadow:0 12px 34px #64236f18!important;transform:translateY(-5px)}
+.site .price-label{display:flex!important;align-items:center!important;justify-content:space-between!important;min-height:28px!important}
+.site .price-label strong{font-size:15px!important;font-weight:800!important;letter-spacing:.01em!important;color:var(--ink)!important}
+.site .price-label span{background:#64236f!important;color:#fff!important;padding:6px 9px!important;border-radius:4px!important;font-size:9px!important;font-weight:800!important;letter-spacing:.08em!important}
+.site .price-card h3{font-size:38px!important;line-height:1.1!important;font-weight:800!important;color:var(--ink)!important;margin:24px 0 8px!important}
+.site .price-card h3 small{font-size:12px!important;font-weight:500!important;letter-spacing:0!important;color:#756a7b!important}
+.site .price-card .credits{display:block!important;font-size:13px!important;font-weight:700!important;color:var(--brand)!important;margin:0 0 12px!important}
+.site .price-card p{font-size:13px!important;line-height:1.55!important;color:var(--body)!important;min-height:40px!important}
+.site .price-card ul{display:grid!important;gap:17px!important;margin:24px 0 28px!important;padding:0!important;list-style:none!important}
+.site .price-card li{display:flex!important;align-items:center!important;gap:9px!important;font-size:13px!important;line-height:1.4!important;color:#514957!important}
+.site .price-card li svg{color:#398653!important;flex:0 0 auto}
+.site .price-card .btn{width:100%!important;min-height:48px!important;border-radius:6px!important;font-size:13px!important;font-weight:800!important}
+.site .price-card .btn-outline{background:#fff!important;border:1.5px solid var(--brand)!important;color:var(--brand)!important}
+.site .price-card .btn-lime{background:var(--brand)!important;border:1.5px solid var(--brand)!important;color:#fff!important}
+.site .price-card .btn:hover{transform:translateY(-2px)!important;box-shadow:0 6px 18px #64236f20!important}
+.site .payment-note{font-size:12px!important;color:#6d6272!important}
+.site .final-cta{background:#f1e9f4!important;padding:64px max(6vw,24px)!important}
+.site .final-cta h2{font-size:clamp(34px,4vw,52px)!important;line-height:1.1!important;color:var(--ink)!important}
+.site .final-cta h2 em{color:var(--brand)!important}
+.site .final-cta .btn{background:var(--brand)!important;color:#fff!important;border-radius:6px!important}
+.site .site-footer{background:#fff!important;color:#6d6272!important;border-top:1px solid var(--line)!important;padding:28px 6vw!important}
+.site .slack-hero h1{font-family:Inter,Manrope,Arial,sans-serif!important;font-size:clamp(48px,6.2vw,78px)!important;font-weight:850!important;letter-spacing:-.06em!important}
+.site .slack-hero .hero-lede{font-size:18px!important;line-height:1.65!important;color:#514957!important}
+.site .slack-hero-actions .btn{font-size:14px!important;font-weight:800!important}
+.site .site-nav nav a,.site .nav-login{font-size:14px!important;font-weight:650!important}
+.site .site-nav .btn{font-size:13px!important}
+@media(max-width:900px){
+ .site .price-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .site .price-card.featured{transform:none}
+}
+@media(max-width:560px){
+ .site .section{padding:58px 18px!important}
+ .site .price-grid{grid-template-columns:1fr!important}
+ .site .price-card,.site .price-card.featured{min-height:0!important;padding:24px 21px!important}
+ .site .pricing .section-title-row h2{font-size:42px!important}
+ .site .final-cta{padding:44px 20px!important}
+}

@@ -10,7 +10,7 @@ assert.match(html, /<div id="root"><\/div>/, 'React root must exist');
 const assets = [...html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)].map(m => m[1]);
 assert.ok(assets.length >= 2, 'Built HTML should reference JS and CSS bundles');
 for (const asset of assets) {
-  const relative = asset.replace(/^\//, '');
+  const relative = asset.replace(/^\//, '').replace(/^themediaplanner\//, '');
   assert.ok(existsSync(join(dist, relative)), `Missing built asset: ${relative}`);
 }
 const jsFiles = readdirSync(join(dist, 'assets')).filter(f => f.endsWith('.js'));

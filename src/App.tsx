@@ -116,7 +116,7 @@ export default function App({user,workspaceId,workspaceRole,onSignOut}:AppProps)
  const openApp=()=>{history.pushState({},'', '/app');window.dispatchEvent(new PopStateEvent('popstate'))};
  const openSignup=()=>{history.pushState({},'', '/signup');window.dispatchEvent(new PopStateEvent('popstate'))};
  const go=(p:Page)=>{setPage(p);setMobile(false);history.pushState({},'','/app/'+p.toLowerCase().replaceAll(' ','-'));window.dispatchEvent(new PopStateEvent('popstate'))};
- if(publicView)return <div className="site"><header className="site-nav"><a href="#" className="wordmark"><Logo/><span>SMART MEDIA PLANNER<small>BY ENSUAL</small></span></a><nav><a href="#platforms">Platforms</a><a href="#capabilities">Capabilities</a><a href="#methodology">Methodology</a><a href="#pricing">Pricing</a></nav><div className="nav-actions"><button className="nav-login" onClick={openApp}>Sign in</button><button className="btn btn-lime" onClick={openSignup}>Start for free <ArrowUpRight size={15}/></button></div></header>
+ if(publicView)return <div className="site"><header className="site-nav"><a href="#" className="wordmark"><Logo/></a><nav><a href="#platforms">Platforms</a><a href="#capabilities">Capabilities</a><a href="#methodology">Methodology</a><a href="#pricing">Pricing</a></nav><div className="nav-actions"><button className="nav-login" onClick={openApp}>Sign in</button><button className="btn btn-lime" onClick={openSignup}>Start for free <ArrowUpRight size={15}/></button></div></header>
  <main>
  <section className="hero slack-hero">
   <div className="hero-copy slack-hero-copy">

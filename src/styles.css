@@ -297,3 +297,102 @@
 .site .cap-lines i{background:linear-gradient(to top,#64236f16,#64236f00)!important;border-top:2px solid #8b55a0!important}
 .site .cap-lines i:nth-child(3),.site .cap-lines i:nth-child(5){border-top-color:#a77bb2!important}
 .site .cap-lines i:nth-child(4){border-top-color:#64236f!important}
+
+
+/* Brand-led SaaS marketing experience — warm, confident, product-first */
+.site{--tmp-plum:#55205f;--tmp-violet:#7a3988;--tmp-cream:#fbf7f1;--tmp-lilac:#f0e6f4;--tmp-ink:#211927;--tmp-copy:#615668;background:var(--tmp-cream)!important;color:var(--tmp-ink)!important}
+.site .site-nav{background:#fff!important;border-bottom:1px solid #eee5ef!important}
+.site .wordmark{color:var(--tmp-ink)!important}
+.site .wordmark small{color:#786d7c!important}
+.site .site-nav .btn.btn-lime{background:var(--tmp-plum)!important;color:#fff!important}
+.site .slack-hero{
+ text-align:left!important;display:grid!important;grid-template-columns:minmax(300px,.88fr) minmax(480px,1.12fr)!important;
+ align-items:center!important;gap:34px!important;padding:76px max(6vw,30px) 68px!important;
+ min-height:610px!important;background:radial-gradient(ellipse at 78% 22%,#7d4a8b 0%,transparent 34%),linear-gradient(125deg,#32133c 0%,#55205f 58%,#673273 100%)!important;
+ color:#fff!important;overflow:hidden!important
+}
+.site .slack-hero:before{content:""!important;position:absolute!important;left:auto!important;right:-160px!important;top:-220px!important;width:720px!important;height:720px!important;border:1px solid #ffffff1b!important;background:transparent!important;border-radius:50%!important;transform:none!important;z-index:0!important}
+.site .slack-hero-copy{max-width:620px!important;margin:0!important;text-align:left!important;z-index:2!important}
+.site .slack-eyebrow{color:#e7d8eb!important;font-size:12px!important;letter-spacing:.14em!important}
+.site .slack-eyebrow span{background:#e7a7f3!important;box-shadow:0 0 0 5px #ffffff16}
+.site .slack-hero h1{color:#fff!important;font-size:clamp(48px,5.1vw,70px)!important;line-height:1.04!important;letter-spacing:-.06em!important;margin:0 0 22px!important}
+.site .slack-hero h1 em{color:#e9b9f2!important}
+.site .slack-hero .hero-lede{color:#eee4f0!important;font-size:18px!important;line-height:1.65!important;margin:0!important;max-width:530px!important}
+.site .slack-hero-actions{justify-content:flex-start!important;margin:30px 0 0!important}
+.site .slack-hero-actions .btn{min-height:54px!important;padding:0 22px!important;border-radius:7px!important;font-size:13px!important}
+.site .slack-hero-actions .btn-lime{background:#f4c6ff!important;color:#35133e!important;border:1px solid #f4c6ff!important}
+.site .slack-hero-actions .btn-outline{background:#ffffff12!important;border:1px solid #ffffff9c!important;color:#fff!important}
+.site .slack-hero .hero-free-note{justify-content:flex-start!important;color:#e4d6e8!important;margin:17px 0 0!important}
+.site .slack-hero .hero-free-note svg{color:#b7edc8!important}
+.site .slack-product-stage{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;z-index:1!important}
+.site .slack-product-window{border-radius:13px!important;box-shadow:0 30px 85px #180a1d66,0 0 0 1px #ffffff30!important;transform:rotate(-1deg)!important}
+.site .slack-window-bar{background:#f8f5f9!important}
+.site .slack-mini-side{background:#4d2058!important}
+.site .slack-mini-main{background:#fff!important}
+.site .slack-proof{background:#fff!important;padding:26px 6vw!important;border-bottom:1px solid #eee5ef!important;gap:22px!important}
+.site .slack-proof>span{color:var(--tmp-plum)!important;font-size:10px!important}
+.site .slack-proof>b{color:#392b3e!important;font-size:13px!important}
+.site .slack-proof>i{background:#e5d9e9!important}
+.site .section{padding:90px max(6vw,28px)!important}
+.site .section-light{background:var(--tmp-cream)!important}
+.site .section-kicker{color:var(--tmp-violet)!important;font-size:11px!important;letter-spacing:.13em!important;font-weight:850!important}
+.site .section-title-row h2{font-size:clamp(38px,4.3vw,58px)!important;line-height:1.08!important;color:#281d2d!important;font-weight:800!important}
+.site .section-title-row h2 em{color:var(--tmp-plum)!important}
+.site .section-title-row>p{font-size:16px!important;line-height:1.7!important;color:var(--tmp-copy)!important}
+.site .cap-grid{gap:18px!important}
+.site .cap-card,.site .cap-card.cap-feature{
+ background:#fff!important;border:1px solid #e9dfea!important;border-radius:15px!important;padding:28px!important;
+ box-shadow:0 12px 35px #3c21400a!important;min-height:310px!important
+}
+.site .cap-card:hover{transform:translateY(-4px)!important;box-shadow:0 18px 40px #3c214018!important;border-color:#cdaed5!important}
+.site .cap-card>span{font-size:10px!important;letter-spacing:.12em!important;font-weight:850!important;color:var(--tmp-violet)!important}
+.site .cap-card>svg{color:var(--tmp-plum)!important;width:32px!important;height:32px!important;margin:28px 0 12px!important}
+.site .cap-card h3{font-size:22px!important;line-height:1.2!important;color:#2b2030!important}
+.site .cap-card p{font-size:14px!important;line-height:1.7!important;color:#65596b!important}
+.site .cap-lines{display:flex!important;align-items:end!important;gap:8px!important;height:100px!important;margin-top:25px!important}
+.site .cap-lines i{flex:1!important;border-radius:7px 7px 0 0!important;background:linear-gradient(180deg,#a66bb1,#ead8ed)!important;border:0!important}
+.site .cap-lines i:nth-child(1){height:52%!important}.site .cap-lines i:nth-child(2){height:78%!important}.site .cap-lines i:nth-child(3){height:62%!important}.site .cap-lines i:nth-child(4){height:100%!important}.site .cap-lines i:nth-child(5){height:84%!important}
+.site .platform-section{background:#f1e8f3!important}
+.site .platform-pill{background:#fff!important;border:1px solid #e4d7e8!important;border-radius:10px!important;padding:17px 18px!important;color:#38283d!important;font-size:14px!important;font-weight:750!important;box-shadow:0 4px 14px #3c214008!important}
+.site .platform-pill .platform-dot{color:#8d5998!important;font-size:15px!important}
+.site .platform-pill b{color:var(--tmp-plum)!important}
+.site .fineprint{color:#766a7b!important;font-size:12px!important}
+.site .methodology{background:#fff!important}
+.site .method-formula{background:#f8f2f9!important;border:1px solid #e8dcea!important;border-radius:14px!important;padding:25px!important}
+.site .method-formula small{color:#8b6592!important}
+.site .method-formula code{color:#47364d!important;border-color:#e7dce9!important;font-size:14px!important}
+.site .method-copy h3{font-size:27px!important;color:#2c2030!important}
+.site .method-copy p{color:#625668!important;font-size:15px!important;line-height:1.75!important}
+.site .text-link{color:var(--tmp-plum)!important;font-weight:800!important}
+.site .pricing{background:#f7f0f8!important}
+.site .pricing .price-card{border-radius:14px!important;border:1px solid #e4d7e8!important;box-shadow:0 14px 36px #3c21400c!important}
+.site .pricing .price-card.featured{border:2px solid var(--tmp-plum)!important;box-shadow:0 18px 45px #55205f20!important}
+.site .pricing .price-label span{background:#55205f!important;color:white!important}
+.site .pricing .price-card .credits{color:var(--tmp-plum)!important}
+.site .pricing .price-card .btn-lime{background:var(--tmp-plum)!important;color:#fff!important}
+.site .pricing .price-card .btn-outline{border-color:#8c5a95!important;color:var(--tmp-plum)!important}
+.site .final-cta{background:linear-gradient(115deg,#3c1746,#642a70)!important;color:#fff!important;padding:66px max(6vw,28px)!important}
+.site .final-cta h2{color:#fff!important;font-size:clamp(34px,4vw,52px)!important}
+.site .final-cta h2 em{color:#f1c9f7!important}
+.site .final-cta small{color:#e1cce6!important}
+.site .final-cta .btn{background:#f4c6ff!important;color:#35133e!important;border:0!important;border-radius:7px!important}
+.site .site-footer{background:#2e1236!important;color:#ddcde1!important;border:0!important}
+.site .site-footer a{color:#fff!important}
+@media(max-width:1000px){
+ .site .slack-hero{grid-template-columns:1fr!important;padding:65px 6vw 50px!important;gap:40px!important}
+ .site .slack-hero-copy{max-width:760px!important}
+ .site .slack-product-window{transform:none!important}
+}
+@media(max-width:650px){
+ .site .slack-hero{padding:50px 20px 35px!important}
+ .site .slack-hero h1{font-size:clamp(42px,11vw,58px)!important}
+ .site .slack-hero .hero-lede{font-size:16px!important}
+ .site .slack-hero-actions{flex-wrap:wrap!important}
+ .site .slack-hero-actions .btn{width:100%!important;justify-content:center!important}
+ .site .slack-product-window{transform:none!important}
+ .site .slack-mini-main{padding:12px!important}
+ .site .slack-proof{justify-content:flex-start!important;padding:22px!important}
+ .site .slack-proof>span{width:100%!important}
+ .site .slack-proof>i{display:none!important}
+ .site .section{padding:58px 20px!important}
+}

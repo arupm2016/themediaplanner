@@ -67,4 +67,4 @@ export default function AuthGate(_:Props){
  if(privateRoute&&session&&workspaceId)return <><App user={session.user} workspaceId={workspaceId} workspaceRole={workspaceRole??'viewer'} onSignOut={signOut}/><div className="auth-session-chip"><span>{session.user.email}</span><button onClick={signOut}>Sign out</button></div></>;
  return <App/>;
 }
-function AuthShell({children}:{children:React.ReactNode}){return <div className="auth-shell"><div className="auth-orbit"/><a className="auth-brand" href="/"><img src="/brand/tmp-mark.svg"/> <span>MEDIA PLANNER<small>BY TMP · INTELLIGENCE OS</small></span></a>{children}<div className="auth-copyright">© {new Date().getFullYear()} SMART MEDIA PLANNER · ENSUAL</div></div>}
+function AuthShell({children}:{children:React.ReactNode}){return <div className="auth-shell"><div className="auth-orbit"/><a className="auth-brand" href="/"><img src="/brand/ensual-mark.svg"/> <span>MEDIA PLANNER<small>BY TMP · INTELLIGENCE OS</small></span></a>{children}<div className="auth-copyright">© {new Date().getFullYear()} SMART MEDIA PLANNER · ENSUAL</div></div>}

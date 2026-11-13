@@ -174,3 +174,41 @@
  .slack-mini-heading h3{font-size:16px}.slack-mini-heading>span{font-size:8px;padding:9px}
  .slack-mini-table>div{font-size:8px;padding:9px 7px}.slack-proof{gap:12px 18px}.slack-proof>span{width:100%;text-align:center}.slack-proof>i{display:none}
 }
+
+
+/* Consistent white / aubergine palette across the ENTIRE public landing page */
+.site,.site main{background:#fff!important;color:#1d1c1d!important}
+.site .platform-section,.site .methodology,.site .pricing,.site .final-cta,.site .site-footer{
+ background:#fff!important;color:#1d1c1d!important;
+}
+.site .platform-section,.site .methodology{border-top:1px solid #eee8f1!important}
+.site .platform-section .section-title-row h2,.site .methodology .section-title-row h2,
+.site .pricing .section-title-row h2,.site .final-cta h2{color:#1d1c1d!important}
+.site .platform-section .section-title-row p,.site .methodology .section-title-row p,
+.site .pricing .section-title-row p{color:#5c535f!important}
+.site .platform-pill{background:#faf7fb!important;border:1px solid #e9e1ec!important;color:#302a33!important}
+.site .platform-pill span{color:#8c7892!important}
+.site .platform-pill b{color:#611f69!important}
+.site .methodology .method-card,.site .methodology article{background:#faf7fb!important;border-color:#e9e1ec!important;color:#29232d!important}
+.site .methodology p,.site .methodology small{color:#625966!important}
+.site .pricing{background:#f8f5fa!important}
+.site .pricing .price-card,.site .pricing .price-card.featured{
+ background:#fff!important;color:#242027!important;border:1px solid #e5dce9!important;box-shadow:0 12px 36px #32183d0b!important
+}
+.site .pricing .price-card p,.site .pricing .price-card li,.site .pricing .price-card small{color:#655b69!important}
+.site .pricing .price-card.featured .btn-lime{background:#611f69!important;color:#fff!important}
+.site .pricing .price-card .btn-outline{border-color:#611f69!important;color:#611f69!important}
+.site .final-cta{background:#f3eaf7!important;border-top:1px solid #e8dced!important;border-bottom:1px solid #e8dced!important}
+.site .final-cta h2,.site .final-cta p{color:#211b24!important}
+.site .final-cta .btn{background:#611f69!important;color:#fff!important}
+.site .site-footer{background:#fff!important;color:#5e5362!important;border-top:1px solid #eee8f1!important}
+.site .site-footer a,.site .site-footer b{color:#302a33!important}
+.site .section-kicker{color:#611f69!important}
+.site .cap-card{background:#faf7fb!important;border-color:#e9e1ec!important;color:#25202a!important}
+.site .cap-card p{color:#625966!important}
+.site .cap-card>span{color:#806889!important}
+.site .cap-card svg{color:#611f69!important}
+.site .slack-proof{background:#fff!important}
+@media(max-width:760px){
+ .site .platform-section,.site .methodology,.site .pricing,.site .final-cta,.site .site-footer{background:#fff!important}
+}

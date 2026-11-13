@@ -438,3 +438,35 @@
 .site .site-nav .wordmark .brand-lockup .ensual-mark{width:43px;height:43px}
 @media(max-width:850px){.workflow-grid{grid-template-columns:1fr}.workflow-grid>article{min-height:0}.ensual-audience{grid-template-columns:1fr;gap:25px}.proof-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.proof-metrics{grid-template-columns:1fr}.audience-tags span{font-size:12px;padding:11px 13px}.brand-name{font-size:9px}.brand-lockup .ensual-mark{width:40px;height:40px}}
+
+
+/* Customer proof, channel marquee and review panels */
+.ensual-platform-marquee{padding:36px 0 30px;background:#fff;border-top:1px solid #eee6f0;border-bottom:1px solid #eee6f0;overflow:hidden}
+.marquee-heading{text-align:center;color:#78677e;font-size:10px;letter-spacing:.15em;font-weight:850;padding:0 20px 23px}
+.marquee-track{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marquee-items{display:flex;align-items:center;gap:58px;width:max-content;animation:ensual-marquee 36s linear infinite}
+.marquee-items span{font-size:22px;font-weight:850;letter-spacing:-.04em;color:#5b3c63;white-space:nowrap}
+.marquee-items span:nth-child(3n){color:#8b6a94}
+.marquee-items span:nth-child(3n+1){color:#302235}
+@keyframes ensual-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ensual-platform-marquee>p{text-align:center;font-size:10px;color:#8b7d90;margin:17px 20px 0}
+.ensual-testimonials{background:#fbf7fc!important}
+.testimonial-empty-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px}
+.testimonial-empty-grid article{min-height:220px;padding:26px;border:1px solid #e7dbe9;background:#fff;border-radius:16px;box-shadow:0 12px 32px #34133c09}
+.testimonial-empty-grid .quote-mark{display:block;font-family:Georgia,serif;font-size:54px;line-height:.8;color:#a879b1}
+.testimonial-empty-grid b{display:block;margin-top:22px;color:#38273e;font-size:16px}
+.testimonial-empty-grid p{font-size:14px;line-height:1.65;color:#6a5d70}
+.testimonial-empty-grid small{display:inline-block;margin-top:12px;padding:7px 10px;border-radius:99px;background:#f5edf7;color:#7d6483;font-size:10px}
+.ensual-google-reviews{display:grid;grid-template-columns:1fr .9fr;align-items:center;gap:50px;padding:76px max(6vw,28px);background:#fff}
+.google-review-copy{display:flex;align-items:flex-start;gap:22px}
+.google-g{display:grid;place-items:center;flex:0 0 54px;height:54px;border:1px solid #e8dfe9;border-radius:16px;font-size:34px;font-weight:850;color:#4285f4;background:#fff;box-shadow:0 8px 22px #331a3c0c}
+.google-review-copy h2{font-size:clamp(32px,3.6vw,48px);line-height:1.1;letter-spacing:-.05em;color:#2b2030;margin:13px 0}
+.google-review-copy h2 em{color:#63296f}
+.google-review-copy p{font-size:14px;line-height:1.7;color:#6a5d70;max-width:480px}
+.google-review-panel{padding:30px;border:1px solid #e7dce9;border-radius:18px;background:linear-gradient(140deg,#fff,#fbf6fc);box-shadow:0 15px 40px #32143d0b}
+.google-stars{font-size:25px;letter-spacing:.12em;color:#d6a53b;margin-bottom:13px}
+.google-review-panel b{font-size:18px;color:#38273e}
+.google-review-panel p{font-size:13px;line-height:1.65;color:#6b5f70}
+.google-review-panel span{display:inline-block;margin-top:10px;font-size:10px;letter-spacing:.04em;color:#826e89;background:#f2eaf4;border-radius:99px;padding:8px 11px}
+@media(prefers-reduced-motion:reduce){.marquee-items{animation:none}}
+@media(max-width:800px){.testimonial-empty-grid{grid-template-columns:1fr}.ensual-google-reviews{grid-template-columns:1fr;gap:25px}.marquee-items{gap:35px}.marquee-items span{font-size:18px}}

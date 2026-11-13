@@ -8,3 +8,29 @@
 .social-auth button b{font:700 13px Arial;color:#b9ff5d}
 .social-auth button:disabled{opacity:.5;cursor:wait}
 @media(max-width:420px){.social-auth{grid-template-columns:1fr}.auth-card{padding:25px 20px}}
+
+
+/* Auth pages use the same clean product palette as the landing page */
+.auth-shell{background:linear-gradient(180deg,#fff 0%,#f7f1fa 100%)!important;color:#211b24!important}
+.auth-orbit{border-color:#e7d9ec!important;box-shadow:0 0 0 90px #faf7fb,0 0 0 180px #faf7fb!important;opacity:.8!important}
+.auth-brand{color:#211b24!important}
+.auth-brand small{color:#756879!important}
+.auth-card{background:#fff!important;border:1px solid #e8dfea!important;box-shadow:0 24px 80px #3b17440f!important;border-radius:8px!important}
+.auth-kicker{color:#611f69!important}
+.auth-card h1{font-family:Manrope,Arial,sans-serif!important;color:#211b24!important}
+.auth-card p{color:#625966!important}
+.auth-card label{font-family:Manrope,Arial,sans-serif!important;color:#514855!important;font-size:12px!important}
+.auth-card input{background:#fff!important;border:1px solid #dcd2e0!important;color:#211b24!important;border-radius:4px!important}
+.auth-card input:focus{border-color:#611f69!important;box-shadow:0 0 0 3px #611f6914!important}
+.auth-submit{background:#611f69!important;color:#fff!important;border-radius:4px!important}
+.auth-divider{color:#897d8d!important}
+.auth-divider:before,.auth-divider:after{background:#e9e1ec!important}
+.social-auth button{background:#fff!important;color:#302a33!important;border:1px solid #ded5e2!important;border-radius:4px!important}
+.social-auth button:hover{border-color:#611f69!important;background:#faf7fb!important}
+.social-auth button b{color:#611f69!important}
+.auth-links button,.auth-back{color:#611f69!important}
+.auth-error,.auth-alert{background:#fff1f0!important;color:#a12c26!important;border:1px solid #f3d4d1!important}
+.auth-success{background:#eef8f1!important;color:#236b3b!important;border:1px solid #d2ead9!important}
+.auth-copyright{color:#8b7e90!important}
+.auth-session-chip{background:#fff!important;border:1px solid #e5dce9!important;color:#5e5362!important;box-shadow:0 6px 24px #32183d10!important}
+.auth-session-chip button{color:#611f69!important}

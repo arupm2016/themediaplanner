@@ -396,3 +396,45 @@
  .site .slack-proof>i{display:none!important}
  .site .section{padding:58px 20px!important}
 }
+
+
+/* ENSUAL / Smart Media Planner identity */
+.brand-lockup{display:inline-flex;align-items:center;gap:10px;min-width:0}
+.brand-lockup .ensual-mark{width:48px;height:48px;flex:0 0 auto}
+.brand-lockup.compact .ensual-mark{width:30px;height:30px}
+.brand-name{display:grid;gap:3px;font-size:11px;line-height:1.15;letter-spacing:.08em;font-weight:850;color:inherit;white-space:nowrap}
+.brand-name small{font-size:9px;letter-spacing:.18em;font-weight:750;color:#e4c7eb}
+.site .wordmark .brand-name{color:#281d2d}
+.site .wordmark .brand-name small{color:#7d5686}
+.site .slack-mini-logo .brand-lockup{gap:5px}.site .slack-mini-logo .ensual-mark{width:25px;height:25px}
+.site .slack-mini-logo b{font-size:11px;letter-spacing:.1em}
+.auth-brand .brand-name{color:#281d2d}.auth-brand .brand-name small{color:#7d5686}
+.ensual-workflow{background:#fff!important}
+.ensual-workflow .section-title-row{margin-bottom:34px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.workflow-grid>article{position:relative;overflow:hidden;padding:28px;border-radius:18px;background:linear-gradient(160deg,#fff 0%,#fbf6fc 100%);border:1px solid #e9ddec;box-shadow:0 14px 36px #32143d0a;min-height:390px}
+.workflow-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:#f0e3f3;color:#63296f;font-size:22px;font-weight:800}
+.workflow-grid h3{font-size:22px;color:#2b2030;margin:22px 0 10px}
+.workflow-grid p{font-size:14px;line-height:1.7;color:#66596c;min-height:72px}
+.workflow-visual{display:grid;gap:10px;margin-top:24px;padding:17px;border-radius:12px;background:#fff;border:1px solid #e9e0eb;color:#4b3c50;font-size:11px}
+.workflow-visual>b{font-size:12px;color:#2d2032;margin-bottom:4px}
+.workflow-visual span{display:flex;justify-content:space-between;gap:10px;color:#7b6e80}
+.workflow-visual strong{color:#592165;font-size:12px}
+.mix-visual i{height:9px;border-radius:99px;background:linear-gradient(90deg,#5b2267 0 38%,#b17fbb 38% 67%,#e4d0e9 67%);display:block}
+.mix-visual i:nth-of-type(2){width:85%}.mix-visual i:nth-of-type(3){width:68%}.mix-visual i:nth-of-type(4){width:93%}
+.mix-visual small{font-size:10px;color:#827486}
+.ensual-audience{display:grid;grid-template-columns:.85fr 1.15fr;align-items:center;gap:50px;padding:72px max(6vw,28px);background:linear-gradient(115deg,#391542,#642a70);color:#fff}
+.ensual-audience .section-kicker{color:#eacaf1!important}
+.ensual-audience h2{font-size:clamp(34px,4vw,52px);line-height:1.08;letter-spacing:-.05em;margin:16px 0 0;color:#fff}
+.ensual-audience h2 em{color:#f0c9f7}
+.audience-tags{display:flex;flex-wrap:wrap;gap:12px}
+.audience-tags span{padding:13px 17px;border:1px solid #ffffff42;border-radius:99px;background:#ffffff12;color:#fff;font-size:13px;font-weight:650}
+.ensual-proof{background:#fbf7fc!important}
+.proof-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-top:30px}
+.proof-metrics article{padding:24px;border-radius:14px;background:#fff;border:1px solid #e9ddec;display:grid;gap:11px}
+.proof-metrics strong{font-size:30px;letter-spacing:-.05em;color:#a77caf}
+.proof-metrics b{font-size:19px;color:#302235}
+.proof-metrics span{font-size:13px;line-height:1.6;color:#706477}
+.site .site-nav .wordmark .brand-lockup .ensual-mark{width:43px;height:43px}
+@media(max-width:850px){.workflow-grid{grid-template-columns:1fr}.workflow-grid>article{min-height:0}.ensual-audience{grid-template-columns:1fr;gap:25px}.proof-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.proof-metrics{grid-template-columns:1fr}.audience-tags span{font-size:12px;padding:11px 13px}.brand-name{font-size:9px}.brand-lockup .ensual-mark{width:40px;height:40px}}

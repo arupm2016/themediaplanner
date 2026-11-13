@@ -11,7 +11,7 @@ const money=(n:number)=>inr(n);
 const Logo=({small=false}:{small?:boolean})=><img src="/brand/tmp-mark.svg" className={small?'logo-small':'logo'} alt="TMP dotted logo"/>;
 const Metric=({label,value,sub,icon:Icon,accent='lime'}:any)=><article className="metric"><div className="metric-top"><span>{label}</span><i className={accent}><Icon size={16}/></i></div><strong>{value}</strong><small>{sub}</small></article>;
 const read=(key:string,fallback:any)=>{try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch{return fallback}};
-type AppProps={user?:{id:string;email?:string};workspaceId?:string;workspaceRole?:string;onSignOut?:()=>void};
+type AppProps={user?:{id:string;email?:string;user_metadata?:Record<string,any>};workspaceId?:string;workspaceRole?:string;onSignOut?:()=>void};
 export default function App({user,workspaceId,workspaceRole,onSignOut}:AppProps){
  const [publicView,setPublicView]=useState(!location.pathname.startsWith('/app'));
  const [page,setPage]=useState<Page>('Overview');

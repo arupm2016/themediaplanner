@@ -120,3 +120,57 @@
 .platform-section{background:#102019}.methodology{background:#172a20}.pricing{background:#f1f6f2;color:#14221b}.pricing .section-kicker{color:#388754}.pricing .price-card{box-shadow:0 12px 32px #233c2d0b;border-radius:10px}.pricing .price-card.featured{background:#173326;color:#f4faf5;border-color:#173326}.pricing .price-card .btn-outline{border-color:#cbd8ce;color:#21392a}.pricing .price-card.featured .btn-lime{background:#b9ff5d;color:#122116}
 .final-cta{background:#b9ff5d}.site-footer{background:#102019;color:#a2b5a7}.product-preview{border-radius:14px;box-shadow:0 30px 80px #122c1d22,0 0 0 8px #ffffffa8}
 @media(max-width:760px){.hero{background:#f4f8f5}.hero:before{width:400px;height:400px;right:-220px;top:-90px}.site-nav{background:#fff}}
+
+/* TMP product-led homepage — inspired by Slack's clarity and hierarchy, not its brand */
+.site{background:#fff!important;color:#1d1c1d!important;font-family:Manrope,Arial,sans-serif}
+.site-nav{height:78px!important;padding:0 max(5vw,24px)!important;background:#fff!important;border-bottom:1px solid #eee9f2!important;box-shadow:none!important}
+.wordmark{color:#1d1c1d!important}.wordmark small{color:#655b68!important}
+.site-nav nav a{color:#302b32!important;font-size:14px!important;font-weight:650!important}
+.site-nav nav a:hover{color:#611f69!important}
+.nav-login{color:#302b32!important;font-weight:700!important}
+.site-nav .btn.btn-lime{background:#611f69!important;color:white!important;box-shadow:none!important;border-radius:4px!important;padding:14px 22px!important;font-weight:800!important}
+.slack-hero{display:block!important;min-height:0!important;padding:76px 24px 0!important;text-align:center!important;background:linear-gradient(180deg,#fff 0%,#fff 65%,#f5eff9 100%)!important;overflow:hidden!important}
+.slack-hero:before{content:""!important;position:absolute!important;width:760px!important;height:760px!important;border-radius:50%!important;background:#eee2f6!important;border:0!important;left:50%!important;top:430px!important;transform:translateX(-50%)!important;z-index:0!important;pointer-events:none!important}
+.slack-hero-copy{position:relative!important;z-index:1!important;max-width:850px!important;margin:0 auto!important}
+.slack-eyebrow{display:inline-flex;align-items:center;gap:9px;color:#5b2866;font-size:11px;font-weight:850;letter-spacing:.12em;margin-bottom:23px}
+.slack-eyebrow span{width:8px;height:8px;border-radius:50%;background:#36a66a}
+.slack-hero h1{font-size:clamp(48px,6.2vw,76px)!important;line-height:1.04!important;letter-spacing:-.055em!important;color:#1d1c1d!important;margin:0 auto 20px!important;max-width:850px!important}
+.slack-hero h1 em{color:#611f69!important;font-style:normal!important}
+.slack-hero .hero-lede{max-width:650px!important;margin:0 auto!important;color:#514a53!important;font-size:18px!important;line-height:1.6!important}
+.slack-hero-actions{display:flex!important;justify-content:center!important;align-items:center!important;gap:12px!important;margin:29px auto 0!important}
+.slack-hero-actions .btn{min-height:54px!important;padding:0 25px!important;border-radius:4px!important;font-size:13px!important;font-weight:850!important;letter-spacing:.035em!important}
+.slack-hero-actions .btn-lime{background:#611f69!important;color:#fff!important}
+.slack-hero-actions .btn-outline{background:#fff!important;border:1.5px solid #611f69!important;color:#611f69!important}
+.slack-hero .hero-free-note{justify-content:center!important;color:#625a64!important;margin:16px auto 0!important;font:12px Manrope!important;letter-spacing:0!important}
+.slack-hero .hero-free-note svg{color:#26965b!important}
+.slack-product-stage{position:relative;z-index:1;max-width:1080px;margin:58px auto 0;padding:0 16px}
+.slack-product-window{background:#fff;border:1px solid #ded6e3;border-radius:12px 12px 0 0;overflow:hidden;box-shadow:0 24px 70px #39214420;text-align:left}
+.slack-window-bar{height:42px;background:#faf8fb;border-bottom:1px solid #e9e3ec;display:flex;align-items:center;justify-content:center;position:relative;color:#756b78;font-size:9px;font-weight:850;letter-spacing:.14em}
+.slack-window-dots{position:absolute;left:15px;display:flex;gap:5px}.slack-window-dots i{width:8px;height:8px;border-radius:50%;background:#d8cbdc}
+.slack-window-bar>b{position:absolute;right:15px;color:#2f8d59;font-size:8px}
+.slack-window-body{display:grid;grid-template-columns:180px 1fr;min-height:390px}
+.slack-mini-side{background:#4b1f55;color:#f8effb;padding:19px 13px;display:flex;flex-direction:column;gap:8px;font-size:11px}
+.slack-mini-logo{display:flex;align-items:center;gap:7px;padding:0 7px 18px;border-bottom:1px solid #795481;margin-bottom:8px}.slack-mini-logo img{width:23px;height:23px}.slack-mini-side>span{padding:10px 11px;border-radius:4px;color:#e5d8e9}.slack-mini-side>span.selected{background:#71457a;color:#fff;font-weight:800}.slack-mini-side-foot{margin-top:auto;padding:10px 8px;color:#c9b4ce;font-size:8px;letter-spacing:.1em}
+.slack-mini-main{padding:23px 25px;color:#26222a;min-width:0}
+.slack-mini-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.slack-mini-heading small{font-size:8px;letter-spacing:.12em;color:#8b7f8d}.slack-mini-heading h3{font-size:20px;margin:5px 0 18px;color:#241f27}.slack-mini-heading>span{font-size:9px;color:#fff;background:#611f69;padding:10px 13px;border-radius:4px}
+.slack-mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.slack-mini-stats>div{border:1px solid #e9e4eb;border-radius:5px;padding:13px}.slack-mini-stats small{display:block;color:#857a88;font-size:8px;letter-spacing:.1em}.slack-mini-stats b{display:block;font-size:20px;margin:9px 0 4px;color:#29232c}.slack-mini-stats i{font-style:normal;color:#8a808d;font-size:9px}
+.slack-mini-chart{border:1px solid #e9e4eb;border-radius:5px;padding:14px;margin-top:12px}.slack-mini-chart>div:first-child{display:flex;justify-content:space-between;font-size:10px}.slack-mini-chart small{font-size:8px;color:#8d8290;letter-spacing:.1em}.slack-mini-bars{height:80px;display:flex;align-items:end;gap:12px;padding:8px 8px 0}.slack-mini-bars i{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,#8b55a0,#d9c2e1);height:56%}.slack-mini-bars i:nth-child(2){height:82%}.slack-mini-bars i:nth-child(3){height:66%}.slack-mini-bars i:nth-child(4){height:93%}.slack-mini-bars i:nth-child(5){height:43%}
+.slack-mini-legend{display:flex;gap:17px;margin-top:7px;color:#837887;font-size:8px}
+.slack-mini-table{margin-top:12px;border:1px solid #e9e4eb;border-radius:5px;overflow:hidden}.slack-mini-table>div{display:grid;grid-template-columns:1.4fr 1fr 1fr;padding:10px 12px;border-bottom:1px solid #eee9f0;font-size:9px;color:#514852}.slack-mini-table>div:first-child{background:#faf8fb;color:#877c89;font-size:8px;letter-spacing:.08em}.slack-mini-table>div:last-child{border:0}.slack-mini-table strong{color:#2c8b55;font-weight:750}
+.slack-proof{display:flex;align-items:center;justify-content:center;gap:27px;flex-wrap:wrap;padding:25px 20px;background:#fff;border-bottom:1px solid #eee9f2;color:#302b32}
+.slack-proof>span{font-size:9px;font-weight:850;letter-spacing:.13em;color:#897d8b}.slack-proof>b{font-size:12px}.slack-proof>i{height:18px;width:1px;background:#e5dce8}
+.section{padding-top:85px;padding-bottom:85px}
+.section-kicker{color:#611f69!important}
+.section-title-row h2 em{color:#611f69!important}
+.cap-card,.price-card{border-radius:8px!important}
+.btn,.btn-lime,.btn-outline{border-radius:4px!important}
+.site-footer{background:#3f1748!important;color:#e6d8ea!important}
+@media(max-width:760px){
+ .site-nav{height:66px!important;padding:0 16px!important}.site-nav nav{display:none!important}
+ .slack-hero{padding:54px 18px 0!important}.slack-hero h1{font-size:clamp(42px,11vw,58px)!important}
+ .slack-hero .hero-lede{font-size:15px!important}.slack-hero-actions{flex-wrap:wrap}.slack-hero-actions .btn{width:100%;justify-content:center}
+ .slack-product-stage{margin-top:38px;padding:0}.slack-window-body{grid-template-columns:1fr}.slack-mini-side{display:none}
+ .slack-mini-main{padding:15px}.slack-mini-stats{grid-template-columns:1fr 1fr}.slack-mini-stats>div:last-child{display:none}
+ .slack-mini-heading h3{font-size:16px}.slack-mini-heading>span{font-size:8px;padding:9px}
+ .slack-mini-table>div{font-size:8px;padding:9px 7px}.slack-proof{gap:12px 18px}.slack-proof>span{width:100%;text-align:center}.slack-proof>i{display:none}
+}
